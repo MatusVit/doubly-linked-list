@@ -1,27 +1,111 @@
 const Node = require('./node');
+// import Node from './node';
 
 class LinkedList {
-    constructor() {}
+    constructor() {
+        this.length = 0;
+        this._head = null;
+        this._tail = null;
+    }
 
-    append(data) {}
+    append(data) {
+        let node = new Node(data);
 
-    head() {}
+        if (this.length === 0) {
+            this._head = node;
+            this._tail = node;
+        } else {
+            node.prev = this._tail;
+            this._tail.next = node;
+            this._tail = node;
+        }
+        this.length++;
 
-    tail() {}
+        return this;
+    }
 
-    at(index) {}
+    head() { return this._head.data }
 
-    insertAt(index, data) {}
+    tail() { return this._tail.data }
 
-    isEmpty() {}
+    at(index) {
+        if (index === 0) return this._head.data;
+        if (index === (this.length - 1)) return this._tail.data;
+        let count = 0;
+        let node = this._head;
+        while (count < index) {
+            node = node.next;
+            count++;
+        }
+        return node.data;
+    }
 
-    clear() {}
+    insertAt(index, data) {
+        let count = 0;
+        let node = this._head;
+        while (count < index) {
+            node = node.next;
+            count++;
+        }
+        const insertNode = new Node(data, node.prev, node);
+        node.prev.next = insertNode;
+        node.prev = insertNode;
+        this.length++;
 
-    deleteAt(index) {}
+        return this;
+    }
 
-    reverse() {}
+    isEmpty() {
+        return this.length === 0 ? true : false;
+    }
 
-    indexOf(data) {}
+    clear() {
+        this.length = 0;
+        let node = new Node();
+        this._head = node;
+        this._tail = node;
+        
+        return this;
+    }
+
+    deleteAt(index) {
+        let count = 0;
+        let node = this._head;
+        while (count < index) {
+            node = node.next;
+            count++;
+        }
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+        
+        return this;
+    }
+
+    reverse() {
+        let node = this._head;
+        while (node !== null) {
+            let nextNode = node.next;
+            node.next = node.prev;
+            node.prev = nextNode;
+            node = nextNode;
+        }
+        let temp = this._head;
+        this._head = this._tail;
+        this._tail = temp;
+
+        return this;
+    }
+
+    indexOf(data) {
+        let node = this._head;
+        let count = 0;
+        while (node !== null) {
+            if (node.data === data) return count; 
+            node = node.next;
+            count++;
+        }
+        return -1;
+    }
 }
 
 module.exports = LinkedList;
