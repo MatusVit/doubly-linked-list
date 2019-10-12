@@ -1,5 +1,4 @@
 const Node = require('./node');
-// import Node from './node';
 
 class LinkedList {
     constructor() {
@@ -41,16 +40,18 @@ class LinkedList {
     }
 
     insertAt(index, data) {
-        let count = 0;
-        let node = this._head;
-        while (count < index) {
-            node = node.next;
-            count++;
+        if (this.length !== 0) {
+            let count = 0;
+            let node = this._head;
+            while (count < index) {
+                node = node.next;
+                count++;
+            }
+            const insertNode = new Node(data, node.prev, node);
+            node.prev.next = insertNode;
+            node.prev = insertNode;
+            this.length++;
         }
-        const insertNode = new Node(data, node.prev, node);
-        node.prev.next = insertNode;
-        node.prev = insertNode;
-        this.length++;
 
         return this;
     }
@@ -64,20 +65,22 @@ class LinkedList {
         let node = new Node();
         this._head = node;
         this._tail = node;
-        
         return this;
     }
 
     deleteAt(index) {
-        let count = 0;
-        let node = this._head;
-        while (count < index) {
-            node = node.next;
-            count++;
-        }
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-        
+        if (this.length > 1){
+
+            let count = 0;
+            let node = this._head;
+            while (count < index) {
+                node = node.next;
+                count++;
+            }
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        } 
+
         return this;
     }
 
@@ -100,7 +103,7 @@ class LinkedList {
         let node = this._head;
         let count = 0;
         while (node !== null) {
-            if (node.data === data) return count; 
+            if (node.data === data) return count;
             node = node.next;
             count++;
         }
@@ -109,3 +112,4 @@ class LinkedList {
 }
 
 module.exports = LinkedList;
+
